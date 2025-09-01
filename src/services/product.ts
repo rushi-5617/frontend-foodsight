@@ -14,13 +14,10 @@ export async function scanProduct({ file, code }: ScanOptions): Promise<ProductR
   if (file) formData.append("file", file);
   if (code) formData.append("barcode", code);
 
-  const token = localStorage.getItem("jwt");
-
   const res = await fetch(`${BACKEND_URL}/foodsight/scan`, {
     method: "POST",
     body: formData,
     credentials: "include",
-    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
   });
 
   const data = await res.json();

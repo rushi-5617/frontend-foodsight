@@ -21,18 +21,13 @@ export default function UserMenu({ onSelectProduct, currentProductId, onLogout, 
   const [showUserDetails, setShowUserDetails] = useState(false);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const user = await fetchCurrentUser();
-      setUser(user);
-    };
-    fetchUser();
+    fetchCurrentUser().then(setUser);
   }, []);
 
   const handleLogout = async () => {
     await logoutUser();
     setUser(null);
     setOpen(false);
-    localStorage.removeItem("jwt");
     onLogout?.();
   };
 
@@ -42,7 +37,8 @@ export default function UserMenu({ onSelectProduct, currentProductId, onLogout, 
         <a
           href="/login"
           className={`text-foreground tracking-wider transition-all duration-300 hover:drop-shadow-[0_0_4px_rgba(255,255,255,0.8)]
-            ${disabled ? "pointer-events-none cursor-not-allowed" : ""}`}
+            ${disabled ? "pointer-events-none cursor-not-allowed" : ""}
+          `}
         >
           Login
         </a>
@@ -77,6 +73,7 @@ export default function UserMenu({ onSelectProduct, currentProductId, onLogout, 
           open ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
+
         <div
           className="fixed inset-0 bg-black/25 transition-opacity duration-300"
           onClick={() => setOpen(false)}
@@ -85,9 +82,11 @@ export default function UserMenu({ onSelectProduct, currentProductId, onLogout, 
         <div
           className={`relative ml-auto sm:max-w-40 min-w-60 md:min-w-80 lg:min-w-100 h-full bg-background text-foreground flex flex-col
             transform transition-transform duration-300 ease-out
-            ${open ? "translate-x-0" : "translate-x-full"}`}
+            ${open ? "translate-x-0" : "translate-x-full"}
+          `}
         >
-          <div className="flex flex-col items-start w-full px-4 tracking-wider leading-relaxed font-light mt-4">
+
+          <div className="flex flex-col items-start mt- w-full px-4 tracking-wider leading-relaxed font-light mt-4">
             <div
               className="flex items-center cursor-pointer space-x-4 p-2 hover:bg-gray-700 rounded transition w-full"
               onClick={() => setShowUserDetails(!showUserDetails)}
@@ -107,7 +106,8 @@ export default function UserMenu({ onSelectProduct, currentProductId, onLogout, 
 
             <div
               className={`flex flex-col w-full space-y-4 overflow-hidden transition-all duration-300 ease-out
-                ${showUserDetails ? "max-h-40 opacity-100 mt-6" : "max-h-0 opacity-0"}`}
+                ${showUserDetails ? "max-h-40 opacity-100 mt-6" : "max-h-0 opacity-0"}
+              `}
             >
               <div className="flex items-center space-x-2 text-foreground w-full text-sm ml-2">
                 <Mail className="w-4 h-4" />
@@ -128,11 +128,7 @@ export default function UserMenu({ onSelectProduct, currentProductId, onLogout, 
 
           <div className="flex-1 overflow-y-auto tracking-wider leading-relaxed font-light ml-6 relative -left-2">
             <h2 className="mb-2 ml-2 text-gray-300 font-normal">Products</h2>
-            <UserProductHistory
-              onSelectProduct={onSelectProduct}
-              currentProductId={currentProductId}
-              open={open}
-            />
+            <UserProductHistory onSelectProduct={onSelectProduct} currentProductId={currentProductId} open={open} />
           </div>
         </div>
       </div>

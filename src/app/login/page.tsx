@@ -3,21 +3,12 @@
 import { useState, useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import Squares from "@/blocks/Backgrounds/Squares/Squares";
-import { fetchCurrentUser } from "@/services/user";
 
 export default function LoginPage() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true);
-
-    const hash = window.location.hash;
-    if (hash.startsWith("#token=")) {
-      const token = hash.split("=")[1];
-      localStorage.setItem("jwt", token);
-      window.history.replaceState({}, document.title, window.location.pathname);
-      fetchCurrentUser();
-    }
   }, []);
 
   if (!isLoaded) {
