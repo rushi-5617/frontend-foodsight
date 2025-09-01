@@ -68,7 +68,7 @@ export default function Page() {
 
       <BrandLogo />
 
-      <UserMenu onSelectProduct={setProduct} currentProductId={product ? Number(product.id) : null} />
+      <UserMenu onSelectProduct={setProduct} currentProductId={product ? Number(product.id) : null} onLogout={() => setProduct(null)} />
 
       <div className="absolute inset-0 flex flex-col justify-center z-10 gap-6 -top-16 md:top-0 lg:gap-20 ml-4 lg:ml-20">
         <h1 className="text-5xl lg:text-7xl leading-tight text-foreground w-3/4">

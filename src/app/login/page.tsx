@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import Squares from "@/blocks/Backgrounds/Squares/Squares";
-import { useUser } from "@/contexts/UserContext"; // import your context
+import { useUser } from "@/contexts/UserContext";
 
 export default function LoginPage() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -17,7 +17,9 @@ export default function LoginPage() {
       const token = hash.split("=")[1];
       localStorage.setItem("jwt", token);
       window.history.replaceState({}, document.title, window.location.pathname);
-      refreshUser(); // refresh user after token
+
+      // Refresh user immediately so UserMenu sees the logged-in user
+      refreshUser();
     }
   }, [refreshUser]);
 
@@ -35,7 +37,7 @@ export default function LoginPage() {
         <Squares
           direction="up"
           fillColor="#1E293B"
-          speed={0.5}
+          speed={0.5} 
           squareSize={50}
           borderColor="#B4E50D"
         />
