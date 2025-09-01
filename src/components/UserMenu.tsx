@@ -21,7 +21,11 @@ export default function UserMenu({ onSelectProduct, currentProductId, onLogout, 
   const [showUserDetails, setShowUserDetails] = useState(false);
 
   useEffect(() => {
-    fetchCurrentUser().then(setUser);
+    const fetchUser = async () => {
+      const user = await fetchCurrentUser();
+      setUser(user);
+    };
+    fetchUser();
   }, []);
 
   const handleLogout = async () => {
