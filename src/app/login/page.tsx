@@ -3,12 +3,11 @@
 import { useState, useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import Squares from "@/blocks/Backgrounds/Squares/Squares";
-import { fetchCurrentUser } from "@/services/user";
-import { User } from "@/types/user";
+import { useUser } from "@/contexts/UserContext"; // import your context
 
 export default function LoginPage() {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const { refreshUser } = useUser();
 
   useEffect(() => {
     setIsLoaded(true);
@@ -18,13 +17,9 @@ export default function LoginPage() {
       const token = hash.split("=")[1];
       localStorage.setItem("jwt", token);
       window.history.replaceState({}, document.title, window.location.pathname);
-
-      (async () => {
-        const loggedInUser = await fetchCurrentUser();
-        setUser(loggedInUser);
-      })();
+      refreshUser(); // refresh user after token
     }
-  }, []);
+  }, [refreshUser]);
 
   if (!isLoaded) {
     return <div className="h-[100dvh] w-full bg-background flex items-center justify-center"></div>;
@@ -47,26 +42,15 @@ export default function LoginPage() {
       </div>
 
       <div className="z-20 p-4 backdrop-blur-sm rounded-lg w-full md:w-1/3 lg:w-1/4 min-h-1/2 border border-gray-600 flex flex-col justify-center text-center">
-        {user ? (
-          <>
-            <h1 className="text-2xl mb-4 font-semibold text-gray-200">
-              Welcome back, {user.name}!
-            </h1>
-            <p className="mb-20 text-gray-300">{user.email}</p>
-          </>
-        ) : (
-          <>
-            <h1 className="text-2xl mb-4 font-semibold text-gray-200">Welcome back!</h1>
-            <p className="mb-20 text-gray-300">Sign in with Google to continue</p>
-            <a
-              href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth2/authorization/google`}
-              className="flex items-center justify-center gap-2 py-2 bg-foreground text-gray-800 rounded-lg hover:bg-gray-200 transition border border-gray-600"
-            >
-              <FcGoogle size={24} />
-              <span className="font-bold text-gray-800">Continue with Google</span>
-            </a>
-          </>
-        )}
+        <h1 className="text-2xl mb-4 font-semibold text-gray-200">Welcome back!</h1>
+        <p className="mb-20 text-gray-300">Sign in with Google to continue</p>
+        <a
+          href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth2/authorization/google`}
+          className="flex items-center justify-center gap-2 py-2 bg-foreground text-gray-800 rounded-lg hover:bg-gray-200 transition border border-gray-600"
+        >
+          <FcGoogle size={24} />
+          <span className="font-bold text-gray-800">Continue with Google</span>
+        </a>
       </div>
     </div>
   );
