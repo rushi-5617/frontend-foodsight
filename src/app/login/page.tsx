@@ -3,11 +3,10 @@
 import { useState, useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import Squares from "@/blocks/Backgrounds/Squares/Squares";
-import { useUser } from "@/contexts/UserContext";
+import { fetchCurrentUser } from "@/services/user";
 
 export default function LoginPage() {
   const [isLoaded, setIsLoaded] = useState(false);
-  const { refreshUser } = useUser();
 
   useEffect(() => {
     setIsLoaded(true);
@@ -17,11 +16,9 @@ export default function LoginPage() {
       const token = hash.split("=")[1];
       localStorage.setItem("jwt", token);
       window.history.replaceState({}, document.title, window.location.pathname);
-
-      // Refresh user immediately so UserMenu sees the logged-in user
-      refreshUser();
+      fetchCurrentUser();
     }
-  }, [refreshUser]);
+  }, []);
 
   if (!isLoaded) {
     return <div className="h-[100dvh] w-full bg-background flex items-center justify-center"></div>;
@@ -42,7 +39,7 @@ export default function LoginPage() {
           borderColor="#B4E50D"
         />
       </div>
-
+  
       <div className="z-20 p-4 backdrop-blur-sm rounded-lg w-full md:w-1/3 lg:w-1/4 min-h-1/2 border border-gray-600 flex flex-col justify-center text-center">
         <h1 className="text-2xl mb-4 font-semibold text-gray-200">Welcome back!</h1>
         <p className="mb-20 text-gray-300">Sign in with Google to continue</p>
@@ -54,6 +51,7 @@ export default function LoginPage() {
           <span className="font-bold text-gray-800">Continue with Google</span>
         </a>
       </div>
+
     </div>
   );
 }

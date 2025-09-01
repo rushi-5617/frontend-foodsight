@@ -8,7 +8,7 @@ export async function fetchCurrentUser(): Promise<User | null> {
 
     const res = await fetch(`${BACKEND_URL}/foodsight/user`, {
       method: "GET",
-      // credentials: "include",
+      credentials: "include",
       headers: token
         ? { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }
         : { "Content-Type": "application/json" },
