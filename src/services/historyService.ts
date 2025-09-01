@@ -9,9 +9,12 @@ interface UserProductDTO {
 
 export async function getUserHistory(): Promise<ProductResponse[]> {
   try {
+    const token = localStorage.getItem("jwt");
+
     const res = await fetch(`${BACKEND_URL}/foodsight/user/products`, {
       method: "GET",
       credentials: "include",
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
     });
 
     if (!res.ok) throw new Error("Failed to fetch history");

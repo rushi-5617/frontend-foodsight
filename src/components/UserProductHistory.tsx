@@ -26,9 +26,7 @@ export default function UserProductHistory({ onSelectProduct, open = false, curr
     }
   }, [currentProductId]);
 
-  const sortedHistory = [...history].sort(
-    (a, b) => Number(b.id) - Number(a.id)
-  );
+  const sortedHistory = [...history].sort((a, b) => Number(b.id) - Number(a.id));
 
   const handleSelect = (product: ProductResponse) => {
     setSelectedId(Number(product.id));
@@ -45,8 +43,7 @@ export default function UserProductHistory({ onSelectProduct, open = false, curr
               history.length > 1 && selectedId === Number(p.id)
                 ? "bg-gray-800"
                 : "hover:bg-gray-700"
-            }
-          `}
+            }`}
           onClick={() => handleSelect(p)}
         >
           {p.productName}

@@ -9,6 +9,13 @@ export default function LoginPage() {
 
   useEffect(() => {
     setIsLoaded(true);
+
+    const hash = window.location.hash;
+    if (hash.startsWith("#token=")) {
+      const token = hash.split("=")[1];
+      localStorage.setItem("jwt", token);
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
   }, []);
 
   if (!isLoaded) {

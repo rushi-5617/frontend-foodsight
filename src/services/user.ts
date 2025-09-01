@@ -4,9 +4,12 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export async function fetchCurrentUser(): Promise<User | null> {
   try {
+    const token = localStorage.getItem("jwt");
+
     const res = await fetch(`${BACKEND_URL}/foodsight/user`, {
       method: "GET",
       credentials: "include",
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
     });
 
     if (!res.ok) return null;
@@ -31,6 +34,8 @@ export async function logoutUser(): Promise<void> {
       method: "POST",
       credentials: "include",
     });
+
+    localStorage.removeItem("jwt");
   } catch (e) {
     console.error("Logout failed", e);
   }
